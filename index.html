@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>NFL Roster</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <section>
+        <div class="search">
+            <form class="form-inline" onsubmit="app.controller.nflController.search(event)" id="searchForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="player" placeholder="Name" />
+                    <button type="submit" class="btn btn-outline-primary" id="get-music-button">Get Music</button>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row" id="player-results">
+                    <div class="col-6">
+                        <img src="" alt="">
+                        <h3>Name</h3>
+                        <h4>Position</h4>
+                        <h4>Team</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </section>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="nflService.js"></script>
+    <script src="nflController.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
