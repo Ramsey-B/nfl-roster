@@ -7,39 +7,35 @@ function NflService() {
             position: '',
             team: ''
         },
-        rb: {
-            rb1: {
-                img: '',
-                name: '',
-                position: '',
-                team: ''
-            },
-            rb2: {
-                img: '',
-                name: '',
-                position: '',
-                team: ''
-            }
+        rb1: {
+            img: '',
+            name: '',
+            position: '',
+            team: ''
         },
-        wr: {
-            wr1: {
-                img: '',
-                name: '',
-                position: '',
-                team: ''
-            },
-            wr2: {
-                img: '',
-                name: '',
-                position: '',
-                team: ''
-            },
-            wr3: {
-                img: '',
-                name: '',
-                position: '',
-                team: ''
-            }
+        rb2: {
+            img: '',
+            name: '',
+            position: '',
+            team: ''
+        },
+        wr1: {
+            img: '',
+            name: '',
+            position: '',
+            team: ''
+        },
+        wr2: {
+            img: '',
+            name: '',
+            position: '',
+            team: ''
+        },
+        wr3: {
+            img: '',
+            name: '',
+            position: '',
+            team: ''
         },
         te: {
             img: '',
@@ -64,7 +60,6 @@ function NflService() {
     var filteredData
 
     function filterData(arr) {
-        debugger
         return arr.filter(function (player) {
             switch (player.position) {
                 case 'QB':
@@ -72,7 +67,7 @@ function NflService() {
                 case 'WR':
                 case 'TE':
                 case 'DST':
-                case 'K': 
+                case 'K':
                     return true
             }
         })
@@ -127,7 +122,7 @@ function NflService() {
         })
     }
 
-    this.addPlayer = function addPlayer(newPlayerId) {
+    this.addPlayer = function addPlayer(newPlayerId, cb) {
         var newPlayer = filteredData.find(function (player) {
             return player.id == newPlayerId
         })
@@ -136,52 +131,72 @@ function NflService() {
             userTeam.qb.name = newPlayer.fullname
             userTeam.qb.position = newPlayer.position
             userTeam.qb.team = newPlayer.pro_team
+            userTeam.qb.id = newPlayer.id
         } else if (newPlayer.position == 'RB') {
-            if (userTeam.rb.rb1.name == '') {
-                userTeam.rb.rb1.img = newPlayer.photo
-                userTeam.rb.rb1.name = newPlayer.fullname
-                userTeam.rb.rb1.position = newPlayer.position
-                userTeam.rb.rb1.team = newPlayer.pro_team
+            if (userTeam.rb1.name == '') {
+                userTeam.rb1.img = newPlayer.photo
+                userTeam.rb1.name = newPlayer.fullname
+                userTeam.rb1.position = newPlayer.position
+                userTeam.rb1.team = newPlayer.pro_team
+                userTeam.rb1.id = newPlayer.id
             } else {
-                userTeam.rb.rb2.img = newPlayer.photo
-                userTeam.rb.rb2.name = newPlayer.fullname
-                userTeam.rb.rb2.position = newPlayer.position
-                userTeam.rb.rb2.team = newPlayer.pro_team
+                userTeam.rb2.img = newPlayer.photo
+                userTeam.rb2.name = newPlayer.fullname
+                userTeam.rb2.position = newPlayer.position
+                userTeam.rb2.team = newPlayer.pro_team
+                userTeam.rb2.id = newPlayer.id
             }
         } else if (newPlayer.position == 'WR') {
-            if (userTeam.wr.wr1.name == '') {
-                userTeam.wr.wr1.img = newPlayer.photo
-                userTeam.wr.wr1.name = newPlayer.fullname
-                userTeam.wr.wr1.position = newPlayer.position
-                userTeam.wr.wr1.team = newPlayer.pro_team
-            } else if (userTeam.wr.wr2.name == '') {
-                userTeam.wr.wr2.img = newPlayer.photo
-                userTeam.wr.wr2.name = newPlayer.fullname
-                userTeam.wr.wr2.position = newPlayer.position
-                userTeam.wr.wr2.team = newPlayer.pro_team
+            if (userTeam.wr1.name == '') {
+                userTeam.wr1.img = newPlayer.photo
+                userTeam.wr1.name = newPlayer.fullname
+                userTeam.wr1.position = newPlayer.position
+                userTeam.wr1.team = newPlayer.pro_team
+                userTeam.wr1.id = newPlayer.id
+
+            } else if (userTeam.wr2.name == '') {
+                userTeam.wr2.img = newPlayer.photo
+                userTeam.wr2.name = newPlayer.fullname
+                userTeam.wr2.position = newPlayer.position
+                userTeam.wr2.team = newPlayer.pro_team
+                userTeam.wr2.id = newPlayer.id
             } else {
-                userTeam.wr.wr3.img = newPlayer.photo
-                userTeam.wr.wr3.name = newPlayer.fullname
-                userTeam.wr.wr3.position = newPlayer.position
-                userTeam.wr.wr3.team = newPlayer.pro_team
+                userTeam.wr3.img = newPlayer.photo
+                userTeam.wr3.name = newPlayer.fullname
+                userTeam.wr3.position = newPlayer.position
+                userTeam.wr3.team = newPlayer.pro_team
+                userTeam.wr3.id = newPlayer.id
             }
         } else if (newPlayer.position == 'TE') {
             userTeam.te.img = newPlayer.photo
             userTeam.te.name = newPlayer.fullname
             userTeam.te.position = newPlayer.position
             userTeam.te.team = newPlayer.pro_team
+            userTeam.te.id = newPlayer.id
         } else if (newPlayer.position == 'DST') {
             userTeam.dst.img = newPlayer.photo
             userTeam.dst.name = newPlayer.fullname
             userTeam.dst.position = newPlayer.position
             userTeam.dst.team = newPlayer.pro_team
+            userTeam.dst.id = newPlayer.id
         } else {
             userTeam.k.img = newPlayer.photo
             userTeam.k.name = newPlayer.fullname
             userTeam.k.position = newPlayer.position
             userTeam.k.team = newPlayer.pro_team
+            userTeam.k.id = newPlayer.id
         }
-        return userTeam
+        cb(userTeam)
+    }
+
+    this.removePlayer = function removePlayer(num, cb) {
+        var pos = [userTeam.qb, userTeam.rb1, userTeam.rb2, userTeam.wr1, userTeam.wr2, userTeam.wr3, userTeam.te, userTeam.dst, userTeam.k]
+        var type = pos[num]
+        type.name = ''
+        type.position = ''
+        type.img = ''
+        type.userTeam = ''
+        cb(userTeam)
     }
 
     loadPlayersData(filterData); //call the function above every time we create a new service

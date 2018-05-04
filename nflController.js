@@ -20,18 +20,20 @@ function NflController() {
 
     function drawTeam(team) {
         var template = ''
-        for (let i = 0; i < team.length; i++) {
-            const player = team[i];
+        var pos = [team.qb, team.rb1, team.rb2, team.wr1, team.wr2, team.wr3, team.te, team.dst, team.k]
+        for (let i = 0; i < pos.length; i++) {
+            const player = pos[i];
             template += `
             <div class="col-6">
                         <img src="${player.img}" alt="">
-                        <h3>Name: ${player.fullname}</h3>
+                        <h3>Name: ${player.name}</h3>
                         <h4>Position: ${player.position}</h4>
                         <h4>Team: ${player.team}</h4>
-                        <button onclick="app.controller.nflController.addPlayer(${player.id})">Add</button>
+                        <button onclick="app.controller.nflController.removePlayer(${[i]})">Remove</button>
                     </div>
             `
         }
+        document.getElementById('user-team').innerHTML = template
     }
 
     this.search = function search(e) {
@@ -46,7 +48,11 @@ function NflController() {
     }
 
     this.addPlayer = function addPlayer(id) {
-        nflService.addPlayer(id)
+        nflService.addPlayer(id, drawTeam)
+    }
+    this.removePlayer = function removePlayer(num) {
+        debugger
+        nflService.removePlayer(num, drawTeam)
     }
 }
 
