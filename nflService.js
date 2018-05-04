@@ -122,10 +122,13 @@ function NflService() {
         })
     }
 
-    this.addPlayer = function addPlayer(newPlayerId, cb) {
+    this.addPlayer = function addPlayer(newPlayerId, cb, cb2) {
         var newPlayer = filteredData.find(function (player) {
             return player.id == newPlayerId
         })
+        debugger
+        var addedPlayer = filteredData.indexOf(newPlayer)
+        filteredData.splice(addedPlayer, 1)
         if (newPlayer.position == 'QB') {
             userTeam.qb.img = newPlayer.photo
             userTeam.qb.name = newPlayer.fullname
@@ -187,6 +190,7 @@ function NflService() {
             userTeam.k.id = newPlayer.id
         }
         cb(userTeam)
+        cb2(filteredData)
     }
 
     this.removePlayer = function removePlayer(num, cb) {

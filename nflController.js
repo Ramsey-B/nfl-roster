@@ -48,10 +48,9 @@ function NflController() {
     }
 
     this.addPlayer = function addPlayer(id) {
-        nflService.addPlayer(id, drawTeam)
+        nflService.addPlayer(id, drawTeam, drawResults)
     }
     this.removePlayer = function removePlayer(num) {
-        debugger
         nflService.removePlayer(num, drawTeam)
     }
 }
