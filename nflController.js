@@ -43,12 +43,15 @@ function NflController() {
         var nameSearch = nflService.getPlayersByName(searchTerm)
         var teamAndPos = teamSearch.concat(posSearch)
         var resultArr = teamAndPos.concat(nameSearch)
+        nflService.searchRecord(resultArr)
         document.getElementById("searchForm").reset();
         drawResults(resultArr)
     }
 
     this.addPlayer = function addPlayer(id) {
         nflService.addPlayer(id, drawTeam)
+        nflService.removeSearch(id, drawResults)
+        nflService.removeData(id)
     }
     this.removePlayer = function removePlayer(num) {
         nflService.removePlayer(num, drawTeam)
