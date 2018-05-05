@@ -35,7 +35,6 @@ function NflController() {
         }
         document.getElementById('user-team').innerHTML = template
     }
-
     this.search = function search(e) {
         e.preventDefault();
         var searchTerm = e.target.player.value.toUpperCase()
@@ -44,11 +43,12 @@ function NflController() {
         var nameSearch = nflService.getPlayersByName(searchTerm)
         var teamAndPos = teamSearch.concat(posSearch)
         var resultArr = teamAndPos.concat(nameSearch)
+        document.getElementById("searchForm").reset();
         drawResults(resultArr)
     }
 
     this.addPlayer = function addPlayer(id) {
-        nflService.addPlayer(id, drawTeam, drawResults)
+        nflService.addPlayer(id, drawTeam)
     }
     this.removePlayer = function removePlayer(num) {
         nflService.removePlayer(num, drawTeam)

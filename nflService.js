@@ -116,8 +116,10 @@ function NflService() {
 
     this.getPlayersByName = function (name) {
         return filteredData.filter(function (player) {
-            if (player.fullname.toUpperCase().includes(name)) {
-                return true;
+            if (userTeam.includes(name) == false) {
+                if (player.fullname.toUpperCase().includes(name)) {
+                    return true;
+                }
             }
         })
     }
@@ -126,9 +128,7 @@ function NflService() {
         var newPlayer = filteredData.find(function (player) {
             return player.id == newPlayerId
         })
-        debugger
-        var addedPlayer = filteredData.indexOf(newPlayer)
-        filteredData.splice(addedPlayer, 1)
+
         if (newPlayer.position == 'QB') {
             userTeam.qb.img = newPlayer.photo
             userTeam.qb.name = newPlayer.fullname
@@ -190,7 +190,6 @@ function NflService() {
             userTeam.k.id = newPlayer.id
         }
         cb(userTeam)
-        cb2(filteredData)
     }
 
     this.removePlayer = function removePlayer(num, cb) {
