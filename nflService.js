@@ -124,12 +124,12 @@ function NflService() {
         })
     }
 
-    this.addPlayer = function addPlayer(newPlayerId, cb) {
+    this.addPlayer = function addPlayer(newPlayerId, cb, cb2) {
         var newPlayer = filteredData.find(function (player) {
             return player.id == newPlayerId
         })
-
         if (newPlayer.position == 'QB') {
+            cb2(userTeam.qb.id)
             userTeam.qb.img = newPlayer.photo
             userTeam.qb.name = newPlayer.fullname
             userTeam.qb.position = newPlayer.position
@@ -143,6 +143,7 @@ function NflService() {
                 userTeam.rb1.team = newPlayer.pro_team
                 userTeam.rb1.id = newPlayer.id
             } else {
+                cb2(userTeam.rb2.id)
                 userTeam.rb2.img = newPlayer.photo
                 userTeam.rb2.name = newPlayer.fullname
                 userTeam.rb2.position = newPlayer.position
@@ -164,6 +165,7 @@ function NflService() {
                 userTeam.wr2.team = newPlayer.pro_team
                 userTeam.wr2.id = newPlayer.id
             } else {
+                cb2(userTeam.wr3.id)
                 userTeam.wr3.img = newPlayer.photo
                 userTeam.wr3.name = newPlayer.fullname
                 userTeam.wr3.position = newPlayer.position
@@ -171,18 +173,21 @@ function NflService() {
                 userTeam.wr3.id = newPlayer.id
             }
         } else if (newPlayer.position == 'TE') {
+            cb2(userTeam.te.id)
             userTeam.te.img = newPlayer.photo
             userTeam.te.name = newPlayer.fullname
             userTeam.te.position = newPlayer.position
             userTeam.te.team = newPlayer.pro_team
             userTeam.te.id = newPlayer.id
         } else if (newPlayer.position == 'DST') {
+            cb2(userTeam.dst.id)
             userTeam.dst.img = newPlayer.photo
             userTeam.dst.name = newPlayer.fullname
             userTeam.dst.position = newPlayer.position
             userTeam.dst.team = newPlayer.pro_team
             userTeam.dst.id = newPlayer.id
         } else {
+            cb2(userTeam.k.id)
             userTeam.k.img = newPlayer.photo
             userTeam.k.name = newPlayer.fullname
             userTeam.k.position = newPlayer.position
