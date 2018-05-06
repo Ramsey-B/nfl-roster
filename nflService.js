@@ -192,15 +192,19 @@ function NflService() {
         cb(userTeam)
     }
 
-    this.removePlayer = function removePlayer(num, cb) {
+    this.removePlayer = function removePlayer(id, cb) {
         var pos = [userTeam.qb, userTeam.rb1, userTeam.rb2, userTeam.wr1, userTeam.wr2, userTeam.wr3, userTeam.te, userTeam.dst, userTeam.k]
-        var type = pos[num]
-        type.name = ''
-        type.position = ''
-        type.img = ''
-        type.userTeam = ''
-        type.id = ''
-        cb(userTeam)
+        for (let i = 0; i < pos.length; i++) {
+            const playerPos = pos[i];
+            if (playerPos.id == id) {
+                playerPos.name = ''
+                playerPos.position = ''
+                playerPos.img = ''
+                playerPos.userTeam = ''
+                playerPos.id = ''
+                cb(userTeam)
+            }
+        }
     }
 
     this.searchRecord = function searchRecord(arr) {
@@ -221,11 +225,22 @@ function NflService() {
         for (let i = 0; i < filteredData.length; i++) {
             const data = filteredData[i];
             if (data.id == playerId) {
-                debugger
                 removedPlayers.push(filteredData[i])
                 filteredData.splice([i], 1)
             }
         }
+    }
+
+    this.addSearch = function addSearch(playerId, cb) {
+        for (let i = 0; i < removedPlayers.length; i++) {
+            const add = removedPlayers[i];
+            if (add.id == playerId) {
+                searchResults.unshift(removedPlayers[i])
+                filteredData.unshift(removedPlayers[i])
+                removedPlayers.splice([i], 1)
+            }
+        }
+        cb(searchResults)
     }
 
     loadPlayersData(filterData); //call the function above every time we create a new service

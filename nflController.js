@@ -29,7 +29,7 @@ function NflController() {
                         <h3>Name: ${player.name}</h3>
                         <h4>Position: ${player.position}</h4>
                         <h4>Team: ${player.team}</h4>
-                        <button onclick="app.controller.nflController.removePlayer(${[i]})">Remove</button>
+                        <button onclick="app.controller.nflController.removePlayer(${player.id})">Remove</button>
                     </div>
             `
         }
@@ -53,8 +53,9 @@ function NflController() {
         nflService.removeSearch(id, drawResults)
         nflService.removeData(id)
     }
-    this.removePlayer = function removePlayer(num) {
-        nflService.removePlayer(num, drawTeam)
+    this.removePlayer = function removePlayer(id) {
+        nflService.removePlayer(id, drawTeam)
+        nflService.addSearch(id, drawResults)
     }
 }
 
