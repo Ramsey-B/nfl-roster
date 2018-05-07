@@ -1,34 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NFL Roster</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
     <section>
-        <div class="search">
-            <form class="form-inline" onsubmit="app.controller.nflController.search(event)" id="searchForm">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="player" placeholder="Search" />
-                    <button type="submit" class="btn btn-outline-primary" id="get-music-button">Find Player</button>
-                </div>
-            </form>
+        <div class="search row">
+            <div class="col-md-5 offset-1 d-flex justify-content-end">
+                <form class="form-inline" onsubmit="app.controller.nflController.search(event)" id="searchForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="player" placeholder="Search" />
+                        <button type="submit" class="btn btn-outline-primary" id="get-music-button">Find Player</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 d-flex flex-row justify-content-around" id="team-display">
+                <p>QB: <br>
+                    RB: <br>
+                    RB:
+                </p>
+                <p>WR: <br>
+                    WR: <br>
+                    WR:
+                </p>
+                <p>TE: <br>
+                    DST: <br>
+                    K:
+                </p>
+            </div>
         </div>
         <div class="row">
-            <div class="col-8">
-                <div class="row" id="player-results">
-                    
+            <div class="col-md-1 search-results"></div>
+            <div class="col-md-7 col-sm-12 search-results">
+                <h2 class="titles">Search Results</h2>
+                <div class="row d-flex flex-row" id="player-results">
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-md-3 col-sm-12 user-players">
+                <h2 class="titles">Your Team</h2>
                 <div class="row" id="user-team">
 
                 </div>
             </div>
+            <div class="col-md-1 user-players"></div>
         </div>
     </section>
 
@@ -38,4 +60,5 @@
     <script src="nflController.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>

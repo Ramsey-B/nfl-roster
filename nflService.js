@@ -1,5 +1,7 @@
 function NflService() {
+    //data brought in from api
     var playersData = []
+    //user team object
     var userTeam = {
         qb: {
             img: '',
@@ -57,10 +59,13 @@ function NflService() {
         }
 
     }
+    //api data filtered so it only gives relavent positions
     var filteredData
+    //records current search results
     var searchResults
+    //stores players removed from search
     var removedPlayers = []
-
+    //filters data
     function filterData(arr) {
         return arr.filter(function (player) {
             switch (player.position) {
@@ -74,7 +79,7 @@ function NflService() {
             }
         })
     }
-
+    //retrieves data from api
     function loadPlayersData(cb) {
         //check if the player already has a copy of the NFL playersData
         var localData = localStorage.getItem('playersData');
@@ -99,7 +104,7 @@ function NflService() {
             filteredData = cb(playersData)
         });
     }
-
+    //finds all players that match team name search 
     this.getPlayersByTeam = function (teamName) {
         return filteredData.filter(function (player) {
             if (player.pro_team == teamName) {
@@ -107,7 +112,7 @@ function NflService() {
             }
         })
     }
-
+    //find 
     this.getPlayersByPosition = function (position) {
         return filteredData.filter(function (player) {
             if (player.position == position) {

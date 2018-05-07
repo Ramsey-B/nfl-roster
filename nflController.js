@@ -6,12 +6,12 @@ function NflController() {
         for (var i = 0; i < searchPlay.length; i++) {
             var player = searchPlay[i]
             template += `
-                    <div class="col-6">
-                        <img src="${player.photo}" alt="">
+                    <div class="col-md-5 col-sm-12 card mt-3 mr-3 search-card">
+                        <img class='player-img' src="${player.photo}">
                         <h3>Name: ${player.fullname}</h3>
                         <h4>Position: ${player.position}</h4>
                         <h4>Team: ${player.pro_team}</h4>
-                        <button onclick="app.controller.nflController.addPlayer(${player.id})">Add</button>
+                        <button class="btn btn-outline-primary mb-2" onclick="app.controller.nflController.addPlayer(${player.id})">Add</button>
                     </div>
             `
         }
@@ -25,17 +25,31 @@ function NflController() {
             const player = pos[i];
             if (player.name != '') {
                 template += `
-                    <div class="col">
-                        <img src="${player.img}" alt="">
+                    <div class="col-10 offset-2 card mt-3 d-flex flex-column team-card">
+                        <img class='player-img' src="${player.img}">
                         <h3>Name: ${player.name}</h3>
                         <h4>Position: ${player.position}</h4>
                         <h4>Team: ${player.team}</h4>
-                        <button onclick="app.controller.nflController.removePlayer(${player.id})">Remove</button>
+                        <button class="btn btn-outline-danger mb-2" onclick="app.controller.nflController.removePlayer(${player.id})">Remove</button>
                     </div>
             `
             }
         }
         document.getElementById('user-team').innerHTML = template
+        document.getElementById('team-display').innerHTML = `
+        <p>QB: ${team.qb.name}<br>
+            RB: ${team.rb1.name}<br>
+            RB: ${team.rb2.name}
+        </p>
+        <p>WR: ${team.wr1.name}<br>
+            WR: ${team.wr2.name}<br>
+            WR: ${team.wr3.name}
+        </p>
+        <p>TE: ${team.te.name}<br>
+            DST: ${team.dst.name}<br>
+            K: ${team.k.name}
+        </p>
+        `
     }
     this.search = function search(e) {
         e.preventDefault();
