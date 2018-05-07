@@ -63,9 +63,9 @@ function NflService() {
     var filteredData
     //records current search results
     var searchResults
-    //stores players removed from search
+    //stores players removed from search, this could just be userTeam but I changed the object of userTeam so it doesnt match player data any more
     var removedPlayers = []
-    //filters data
+    //filters data for relavant players
     function filterData(arr) {
         return arr.filter(function (player) {
             switch (player.position) {
@@ -112,7 +112,7 @@ function NflService() {
             }
         })
     }
-    //find 
+    //find player by position
     this.getPlayersByPosition = function (position) {
         return filteredData.filter(function (player) {
             if (player.position == position) {
@@ -120,20 +120,24 @@ function NflService() {
             }
         })
     }
-
+    //find player by name
     this.getPlayersByName = function (name) {
         return filteredData.filter(function (player) {
+            //makes players in data same case as search term then checks to see if term is included in players name
             if (player.fullname.toUpperCase().includes(name)) {
                 return true;
             }
         })
     }
-
+    //adds player to team arr
     this.addPlayer = function addPlayer(newPlayerId, cb, cb2) {
+        //looks through all data to check if a player id matches added players id
         var newPlayer = filteredData.find(function (player) {
             return player.id == newPlayerId
         })
+        //checks to see if position is already filled on team
         if (newPlayer.position == 'QB') {
+            //cb2 just removes the player from team and adds them back into search results and data, it does that to replace player with newly added player
             cb2(userTeam.qb.id)
             userTeam.qb.img = newPlayer.photo
             userTeam.qb.name = newPlayer.fullname
@@ -201,7 +205,7 @@ function NflService() {
         }
         cb(userTeam)
     }
-
+    //just removes player with matching idea and updates team
     this.removePlayer = function removePlayer(id, cb) {
         var pos = [userTeam.qb, userTeam.rb1, userTeam.rb2, userTeam.wr1, userTeam.wr2, userTeam.wr3, userTeam.te, userTeam.dst, userTeam.k]
         for (let i = 0; i < pos.length; i++) {
@@ -216,11 +220,11 @@ function NflService() {
             }
         }
     }
-
+    //records search results and logs them so i can edit them as players are added or removed
     this.searchRecord = function searchRecord(arr) {
         searchResults = arr
     }
-
+    //removes added player from search results then redraws the results
     this.removeSearch = function removeSearch(playerId, cb) {
         for (let i = 0; i < searchResults.length; i++) {
             const search = searchResults[i];
@@ -230,7 +234,7 @@ function NflService() {
         }
         cb(searchResults)
     }
-
+    //removes added player from data so they cant be added again
     this.removeData = function removeData(playerId) {
         for (let i = 0; i < filteredData.length; i++) {
             const data = filteredData[i];
@@ -240,11 +244,12 @@ function NflService() {
             }
         }
     }
-
+    //adds player back into search and data and redraws it so that they can be added again
     this.addSearch = function addSearch(playerId, cb) {
         for (let i = 0; i < removedPlayers.length; i++) {
             const add = removedPlayers[i];
             if (add.id == playerId) {
+                //removed players just logs the players that have been removed from the search and data
                 searchResults.unshift(removedPlayers[i])
                 filteredData.unshift(removedPlayers[i])
                 removedPlayers.splice([i], 1)
