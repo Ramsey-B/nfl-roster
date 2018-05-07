@@ -5,7 +5,8 @@ function NflController() {
         var template = ''
         for (var i = 0; i < searchPlay.length; i++) {
             var player = searchPlay[i]
-            template += `
+            if (player.id) {
+                template += `
                     <div class="col-md-5 col-sm-12 card mt-3 mr-3 search-card">
                         <img class='player-img' src="${player.img}">
                         <h3>Name: ${player.name}</h3>
@@ -14,6 +15,7 @@ function NflController() {
                         <button class="btn btn-outline-primary mb-2" onclick="app.controller.nflController.addPlayer(${player.id})">Add</button>
                     </div>
             `
+            }
         }
         document.getElementById('player-results').innerHTML = template
     }
@@ -80,9 +82,11 @@ function NflController() {
         nflService.removeSearch(drawResults)
     }
     this.removePlayer = function removePlayer(id) {
-        //tells service to removePlayer from userTeam that has that id
-        nflService.removePlayer(id, drawTeam)
-        //adds removed player back into search results
-        nflService.addSearch(id, drawResults)
+        if (id != undefined) {
+            //tells service to removePlayer from userTeam that has that id
+            nflService.removePlayer(id, drawTeam)
+            //adds removed player back into search results
+            nflService.addSearch(id, drawResults)
+        }
     }
 }

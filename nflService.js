@@ -74,6 +74,13 @@ function NflService() {
             }
         })
     }
+    this.getPlayersById = function (id) {
+        return filteredData.filter(function (player) {
+            if (player.id == id) {
+                return true;
+            }
+        })
+    }
     //find player by position
     this.getPlayersByPosition = function (position) {
         return filteredData.filter(function (player) {
@@ -145,7 +152,6 @@ function NflService() {
     }
     //records search results and logs them so i can edit them as players are added or removed
     this.searchRecord = function searchRecord(arr) {
-        debugger
         var search = []
         for (let i = 0; i < arr.length; i++) {
             const player = arr[i];
@@ -163,15 +169,12 @@ function NflService() {
     }
     //adds player back into search and data and redraws it so that they can be added again
     this.addSearch = function addSearch(playerId, cb) {
-        for (let i = 0; i < addedPlayers.length; i++) {
-            const add = addedPlayers[i];
-            if (add.id == playerId) {
-                //added players just logs the players that have been added from the search and data
-                searchResults.unshift(addedPlayers[i])
-                filteredData.unshift(addedPlayers[i])
-                addedPlayers.splice([i], 1)
-            }
-        }
+        debugger
+        var removeId = "" + playerId
+        var removedPlayer = addedPlayers.indexOf(removeId)
+        addedPlayers.splice(removedPlayer, 1)
+        var player = this.getPlayersById(playerId)
+        searchResults.unshift(player[0])
         cb(searchResults)
     }
 
