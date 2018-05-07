@@ -7,10 +7,10 @@ function NflController() {
             var player = searchPlay[i]
             template += `
                     <div class="col-md-5 col-sm-12 card mt-3 mr-3 search-card">
-                        <img class='player-img' src="${player.photo}">
-                        <h3>Name: ${player.fullname}</h3>
+                        <img class='player-img' src="${player.img}">
+                        <h3>Name: ${player.name}</h3>
                         <h4>Position: ${player.position}</h4>
-                        <h4>Team: ${player.pro_team}</h4>
+                        <h4>Team: ${player.team}</h4>
                         <button class="btn btn-outline-primary mb-2" onclick="app.controller.nflController.addPlayer(${player.id})">Add</button>
                     </div>
             `
@@ -23,7 +23,7 @@ function NflController() {
         var pos = [team.qb, team.rb1, team.rb2, team.wr1, team.wr2, team.wr3, team.te, team.dst, team.k]
         for (let i = 0; i < pos.length; i++) {
             const player = pos[i];
-            if (player.name != '') {
+            if (player.id) {
                 template += `
                     <div class="col-10 offset-2 card mt-3 d-flex flex-column team-card">
                         <img class='player-img' src="${player.img}">
@@ -73,11 +73,10 @@ function NflController() {
     }
 
     this.addPlayer = function addPlayer(id) {
-        //sends added players id, drawTeam function to services addPlayer function
-        nflService.addPlayer(id, drawTeam, app.controller.nflController.removePlayer)
+        //sends added players id, drawTeam function to services addPlayer function    
+        nflService.addPlayer(id, drawTeam, this.removePlayer)
         //removes player from search results and data
-        nflService.removeSearch(id, drawResults)
-        nflService.removeData(id)
+        nflService.removeSearch(drawResults)
     }
     this.removePlayer = function removePlayer(id) {
         //tells service to removePlayer from userTeam that has that id
@@ -86,5 +85,3 @@ function NflController() {
         nflService.addSearch(id, drawResults)
     }
 }
-
-
