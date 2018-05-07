@@ -1,5 +1,5 @@
 .player-img {
-    width: 30vh;
+    width: 20vh;
     align-content: center;
 }
 
@@ -9,16 +9,15 @@
     height: 14vh;
 }
 
-.search-results {
+.content {
     background-color: #013369;
-}
-
-.user-players {
-    background-color: #D50A0A;
-    width: 100vh;
-    height: 100vh;
 }
 
 .titles {
     color: white;
+    align-content: center;
+}
+
+.user-players {
+    border-left: 5px solid red;
 }
