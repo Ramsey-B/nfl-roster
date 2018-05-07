@@ -137,8 +137,9 @@ function NflService() {
         })
         //checks to see if position is already filled on team
         if (newPlayer.position == 'QB') {
-            //cb2 just removes the player from team and adds them back into search results and data, it does that to replace player with newly added player
+            //cb2 just removes the player from team and adds them back into search results and data, it does that to replace player with newly added
             cb2(userTeam.qb.id)
+            //this can be reduced by just pushing the orignal object into userTeam, but i chose to limit the results to just the relevent info
             userTeam.qb.img = newPlayer.photo
             userTeam.qb.name = newPlayer.fullname
             userTeam.qb.position = newPlayer.position
