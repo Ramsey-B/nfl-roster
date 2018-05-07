@@ -20,6 +20,7 @@ function NflController() {
     //dynamically draws users team
     function drawTeam(team) {
         var template = ''
+        var headTemplate
         var pos = [team.qb, team.rb1, team.rb2, team.wr1, team.wr2, team.wr3, team.te, team.dst, team.k]
         for (let i = 0; i < pos.length; i++) {
             const player = pos[i];
@@ -65,11 +66,11 @@ function NflController() {
         var teamAndPos = teamSearch.concat(posSearch)
         var resultArr = teamAndPos.concat(nameSearch)
         //creates search record array in service
-        nflService.searchRecord(resultArr)
+        var filteredSearch = nflService.searchRecord(resultArr)
         //clears the seach bar
         document.getElementById("searchForm").reset();
         //draws search results
-        drawResults(resultArr)
+        drawResults(filteredSearch)
     }
 
     this.addPlayer = function addPlayer(id) {

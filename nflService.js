@@ -105,77 +105,33 @@ function NflService() {
             case "K":
                 cb2(userTeam[newPlayer.position.toLowerCase()].id)
                 userTeam[newPlayer.position.toLowerCase()] = newPlayer
-                addedPlayers.push(newPlayer)
+                addedPlayers.push(newPlayer.id)
                 break;
             case "RB":
                 if (userTeam.rb1.name == '') {
                     userTeam.rb1 = newPlayer
-                    addedPlayers.push(newPlayer)
+                    addedPlayers.push(newPlayer.id)
                 } else {
                     cb2(userTeam.rb2.id)
                     userTeam.rb2 = newPlayer
-                    addedPlayers.push(newPlayer)
+                    addedPlayers.push(newPlayer.id)
                 }
                 break;
             case "WR":
                 if (userTeam.wr1.name == '') {
                     userTeam.wr1 = newPlayer
-                    addedPlayers.push(newPlayer)
+                    addedPlayers.push(newPlayer.id)
 
                 } else if (userTeam.wr2.name == '') {
                     userTeam.wr2 = newPlayer
-                    addedPlayers.push(newPlayer)
+                    addedPlayers.push(newPlayer.id)
                 } else {
                     cb2(userTeam.wr3.id)
                     userTeam.wr3 = newPlayer
-                    addedPlayers.push(newPlayer)
+                    addedPlayers.push(newPlayer.id)
                 }
                 break;
         }
-
-
-        //checks to see if position is already filled on team
-        // if (newPlayer.position == 'QB') {
-        //     //cb2 just removes the player from team and adds them back into search results and data, it does that to replace player with newly added
-        //     cb2(userTeam.qb.id)
-        //     //this can be reduced by just pushing the orignal object into userTeam, but i chose to limit the results to just the relevent info
-        //     userTeam.qb = newPlayer
-        //     addedPlayers.push(newPlayer)
-        // } else if (newPlayer.position == 'RB') {
-        //     if (userTeam.rb1.name == '') {
-        //         userTeam.rb1 = newPlayer
-        //         addedPlayers.push(newPlayer)
-        //     } else {
-        //         cb2(userTeam.rb2.id)
-        //         userTeam.rb2 = newPlayer
-        //         addedPlayers.push(newPlayer)
-        //     }
-        // } else if (newPlayer.position == 'WR') {
-        //     if (userTeam.wr1.name == '') {
-        //         userTeam.wr1 = newPlayer
-        //         addedPlayers.push(newPlayer)
-
-        //     } else if (userTeam.wr2.name == '') {
-        //         userTeam.wr2 = newPlayer
-        //         addedPlayers.push(newPlayer)
-        //     } else {
-        //         cb2(userTeam.wr3.id)
-        //         userTeam.wr3 = newPlayer
-        //         addedPlayers.push(newPlayer)
-        //     }
-        // } else if (newPlayer.position == 'TE') {
-        //     cb2(userTeam.te.id)
-        //     userTeam.te = newPlayer
-        //     addedPlayers.push(newPlayer)
-        // } else if (newPlayer.position == 'DST') {
-        //     cb2(userTeam.dst.id)
-        //     userTeam.dst = newPlayer
-        //     addedPlayers.push(newPlayer)
-        // } else {
-        //     cb2(userTeam.k.id)
-        //     userTeam.k = newPlayer
-        //     addedPlayers.push(newPlayer)
-        // }
         cb(userTeam)
     }
     //just removes player with matching idea and updates team
@@ -189,14 +145,16 @@ function NflService() {
     }
     //records search results and logs them so i can edit them as players are added or removed
     this.searchRecord = function searchRecord(arr) {
+        debugger
         var search = []
         for (let i = 0; i < arr.length; i++) {
             const player = arr[i];
-            if (!(addedPlayers.includes(player))) {
+            if (!(addedPlayers.includes(player.id))) {
                 search.push(player)
             }
         }
         searchResults = search
+        return search
     }
     //redraws search
     this.removeSearch = function removeSearch(cb) {
