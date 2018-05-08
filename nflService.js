@@ -104,7 +104,7 @@ function NflService() {
         var newPlayer = searchResults.find(function (player) {
             return player.id == newPlayerId
         })
-
+        debugger
         switch (newPlayer.position) {
             case "QB":
             case "TE":
@@ -115,7 +115,7 @@ function NflService() {
                 addedPlayers.push(newPlayer)
                 break;
             case "RB":
-                if (userTeam.rb1.name == '') {
+                if (!(userTeam.rb1.name)) {
                     userTeam.rb1 = newPlayer
                     addedPlayers.push(newPlayer)
                 } else {
@@ -125,11 +125,11 @@ function NflService() {
                 }
                 break;
             case "WR":
-                if (userTeam.wr1.name == '') {
+                if (!(userTeam.wr1.name)) {
                     userTeam.wr1 = newPlayer
                     addedPlayers.push(newPlayer)
 
-                } else if (userTeam.wr2.name == '') {
+                } else if (!(userTeam.wr2.name)) {
                     userTeam.wr2 = newPlayer
                     addedPlayers.push(newPlayer)
                 } else {
