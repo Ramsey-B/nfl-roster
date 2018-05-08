@@ -105,14 +105,6 @@ function NflService() {
             return player.id == newPlayerId
         })
         switch (newPlayer.position) {
-            case "QB":
-            case "TE":
-            case "DST":
-            case "K":
-                swapPlayer(userTeam[newPlayer.position.toLowerCase()].id)
-                userTeam[newPlayer.position.toLowerCase()] = newPlayer
-                addedPlayers.push(newPlayer)
-                break;
             case "RB":
                 if (!(userTeam.rb1.name)) {
                     userTeam.rb1 = newPlayer
@@ -137,6 +129,10 @@ function NflService() {
                     addedPlayers.push(newPlayer)
                 }
                 break;
+            default:
+                swapPlayer(userTeam[newPlayer.position.toLowerCase()].id)
+                userTeam[newPlayer.position.toLowerCase()] = newPlayer
+                addedPlayers.push(newPlayer)
         }
         cb(userTeam)
     }
