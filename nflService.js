@@ -171,7 +171,6 @@ function NflService() {
     }
     //adds player back into search and data and redraws it so that they can be added again
     this.addSearch = function addSearch(playerId, cb) {
-        debugger
         var player = getPlayersById(playerId)
         for (let i = 0; i < addedPlayers.length; i++) {
             const addPlayer = addedPlayers[i];

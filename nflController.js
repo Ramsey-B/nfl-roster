@@ -41,17 +41,17 @@ function NflController() {
         document.getElementById('user-team').innerHTML = template
         //this makes the header team name thing to the right of the search bar
         document.getElementById('team-display').innerHTML = `
-        <p>QB: ${team.qb.name}<br>
-            RB: ${team.rb1.name}<br>
-            RB: ${team.rb2.name}
+        <p>QB: ${team.qb.name ? team.qb.name : 'empty'}<br>
+            RB: ${team.rb1.name  ? team.rb1.name : 'empty'}<br>
+            RB: ${team.rb2.name ? team.rb2.name : 'empty'}
         </p>
-        <p>WR: ${team.wr1.name}<br>
-            WR: ${team.wr2.name}<br>
-            WR: ${team.wr3.name}
+        <p>WR: ${team.wr1.name  ? team.wr1.name : 'empty'}<br>
+            WR: ${team.wr2.name  ? team.wr2.name : 'empty'}<br>
+            WR: ${team.wr3.name  ? team.wr3.name : 'empty'}
         </p>
-        <p>TE: ${team.te.name}<br>
-            DST: ${team.dst.name}<br>
-            K: ${team.k.name}
+        <p>TE: ${team.te.name ? team.te.name : 'empty'}<br>
+            DST: ${team.dst.name  ? team.dst.name : 'empty'}<br>
+            K: ${team.k.name  ? team.k.name : 'empty'}
         </p>
         `
     }
