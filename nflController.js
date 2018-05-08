@@ -22,7 +22,6 @@ function NflController() {
     //dynamically draws users team
     function drawTeam(team) {
         var template = ''
-        var headTemplate
         var pos = [team.qb, team.rb1, team.rb2, team.wr1, team.wr2, team.wr3, team.te, team.dst, team.k]
         for (let i = 0; i < pos.length; i++) {
             const player = pos[i];
@@ -77,7 +76,7 @@ function NflController() {
 
     this.addPlayer = function addPlayer(id) {
         //sends added players id, drawTeam function to services addPlayer function    
-        nflService.addPlayer(id, drawTeam, this.removePlayer)
+        nflService.addPlayer(id, drawTeam)
         //removes player from search results and data
         nflService.removeSearch(drawResults)
     }

@@ -99,18 +99,17 @@ function NflService() {
         })
     }
     //adds player to team arr
-    this.addPlayer = function addPlayer(newPlayerId, cb, cb2) {
+    this.addPlayer = function addPlayer(newPlayerId, cb) {
         //looks through all data to check if a player id matches added players id
         var newPlayer = searchResults.find(function (player) {
             return player.id == newPlayerId
         })
-        debugger
         switch (newPlayer.position) {
             case "QB":
             case "TE":
             case "DST":
             case "K":
-                cb2(userTeam[newPlayer.position.toLowerCase()].id)
+                swapPlayer(userTeam[newPlayer.position.toLowerCase()].id)
                 userTeam[newPlayer.position.toLowerCase()] = newPlayer
                 addedPlayers.push(newPlayer)
                 break;
@@ -119,7 +118,7 @@ function NflService() {
                     userTeam.rb1 = newPlayer
                     addedPlayers.push(newPlayer)
                 } else {
-                    cb2(userTeam.rb2.id)
+                    swapPlayer(userTeam.rb2.id)
                     userTeam.rb2 = newPlayer
                     addedPlayers.push(newPlayer)
                 }
@@ -133,7 +132,7 @@ function NflService() {
                     userTeam.wr2 = newPlayer
                     addedPlayers.push(newPlayer)
                 } else {
-                    cb2(userTeam.wr3.id)
+                    swapPlayer(userTeam.wr3.id)
                     userTeam.wr3 = newPlayer
                     addedPlayers.push(newPlayer)
                 }
@@ -149,6 +148,17 @@ function NflService() {
             }
         }
         cb(userTeam)
+    }
+    function swapPlayer(id) {
+        if (id != undefined) {
+            for (var key in userTeam) {
+                if (userTeam[key].id == id) {
+                    searchResults.unshift(userTeam[key])
+                    removeAddedPlayer(id)
+                    userTeam[key] = {}
+                }
+            }
+        }
     }
     //records search results and logs them so i can edit them as players are added or removed
     this.searchRecord = function searchRecord(arr) {
@@ -172,14 +182,18 @@ function NflService() {
     //adds player back into search and data and redraws it so that they can be added again
     this.addSearch = function addSearch(playerId, cb) {
         var player = getPlayersById(playerId)
-        for (let i = 0; i < addedPlayers.length; i++) {
-            const addPlayer = addedPlayers[i];
-            if (addPlayer.id == playerId) {
-                addedPlayers.splice(addPlayer, 1)
-            }
-        }
+        removeAddedPlayer(playerId)
         searchResults.unshift(player[0])
         cb(searchResults)
+    }
+
+    function removeAddedPlayer(id) {
+        for (let i = 0; i < addedPlayers.length; i++) {
+            const addPlayer = addedPlayers[i];
+            if (addPlayer.id == id) {
+                addedPlayers.splice([i], 1)
+            }
+        }
     }
 
     loadPlayersData(filterData); //call the function above every time we create a new service
