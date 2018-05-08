@@ -74,8 +74,8 @@ function NflService() {
             }
         })
     }
-    this.getPlayersById = function (id) {
-        return filteredData.filter(function (player) {
+    function getPlayersById(id) {
+        return addedPlayers.filter(function (player) {
             if (player.id == id) {
                 return true;
             }
@@ -112,30 +112,30 @@ function NflService() {
             case "K":
                 cb2(userTeam[newPlayer.position.toLowerCase()].id)
                 userTeam[newPlayer.position.toLowerCase()] = newPlayer
-                addedPlayers.push(newPlayer.id)
+                addedPlayers.push(newPlayer)
                 break;
             case "RB":
                 if (userTeam.rb1.name == '') {
                     userTeam.rb1 = newPlayer
-                    addedPlayers.push(newPlayer.id)
+                    addedPlayers.push(newPlayer)
                 } else {
                     cb2(userTeam.rb2.id)
                     userTeam.rb2 = newPlayer
-                    addedPlayers.push(newPlayer.id)
+                    addedPlayers.push(newPlayer)
                 }
                 break;
             case "WR":
                 if (userTeam.wr1.name == '') {
                     userTeam.wr1 = newPlayer
-                    addedPlayers.push(newPlayer.id)
+                    addedPlayers.push(newPlayer)
 
                 } else if (userTeam.wr2.name == '') {
                     userTeam.wr2 = newPlayer
-                    addedPlayers.push(newPlayer.id)
+                    addedPlayers.push(newPlayer)
                 } else {
                     cb2(userTeam.wr3.id)
                     userTeam.wr3 = newPlayer
-                    addedPlayers.push(newPlayer.id)
+                    addedPlayers.push(newPlayer)
                 }
                 break;
         }
@@ -155,7 +155,9 @@ function NflService() {
         var search = []
         for (let i = 0; i < arr.length; i++) {
             const player = arr[i];
-            if (!(addedPlayers.includes(player.id))) {
+            if (!(addedPlayers.find(function (addedPlayers) {
+                return player.id == addedPlayers.id
+            }))) {
                 search.push(player)
             }
         }
@@ -170,10 +172,13 @@ function NflService() {
     //adds player back into search and data and redraws it so that they can be added again
     this.addSearch = function addSearch(playerId, cb) {
         debugger
-        var removeId = "" + playerId
-        var removedPlayer = addedPlayers.indexOf(removeId)
-        addedPlayers.splice(removedPlayer, 1)
-        var player = this.getPlayersById(playerId)
+        var player = getPlayersById(playerId)
+        for (let i = 0; i < addedPlayers.length; i++) {
+            const addPlayer = addedPlayers[i];
+            if (addPlayer.id == playerId) {
+                addedPlayers.splice(addPlayer, 1)
+            }
+        }
         searchResults.unshift(player[0])
         cb(searchResults)
     }
