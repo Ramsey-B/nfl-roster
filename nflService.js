@@ -2,18 +2,8 @@ function NflService() {
     //data brought in from api
     var playersData = []
     //user team object
-    var userTeam = {
-        qb: {},
-        rb1: {},
-        rb2: {},
-        wr1: {},
-        wr2: {},
-        wr3: {},
-        te: {},
-        dst: {},
-        k: {}
-
-    }
+    var userTeam = []
+    var avalPositions = ['QB', 'RB', 'RB', 'WR', 'WR', 'WR', 'TE', 'DST', 'K']
     //api data filtered so it only gives relavent positions
     var filteredData
     //records current search results
@@ -58,7 +48,6 @@ function NflService() {
                 team: player.pro_team,
                 id: player.id,
             }));
-            console.log(playersData)
             console.log('Player Data Ready')
             console.log('Writing Player Data to localStorage')
             localStorage.setItem('playersData', JSON.stringify(playersData))
@@ -75,7 +64,7 @@ function NflService() {
         })
     }
     function getPlayersById(id) {
-        return addedPlayers.filter(function (player) {
+        return userTeam.filter(function (player) {
             if (player.id == id) {
                 return true;
             }
@@ -104,66 +93,41 @@ function NflService() {
         var newPlayer = searchResults.find(function (player) {
             return player.id == newPlayerId
         })
-        switch (newPlayer.position) {
-            case "RB":
-                if (!(userTeam.rb1.name)) {
-                    userTeam.rb1 = newPlayer
-                    addedPlayers.push(newPlayer)
-                } else {
-                    swapPlayer(userTeam.rb2.id)
-                    userTeam.rb2 = newPlayer
-                    addedPlayers.push(newPlayer)
-                }
-                break;
-            case "WR":
-                if (!(userTeam.wr1.name)) {
-                    userTeam.wr1 = newPlayer
-                    addedPlayers.push(newPlayer)
-
-                } else if (!(userTeam.wr2.name)) {
-                    userTeam.wr2 = newPlayer
-                    addedPlayers.push(newPlayer)
-                } else {
-                    swapPlayer(userTeam.wr3.id)
-                    userTeam.wr3 = newPlayer
-                    addedPlayers.push(newPlayer)
-                }
-                break;
-            default:
-                swapPlayer(userTeam[newPlayer.position.toLowerCase()].id)
-                userTeam[newPlayer.position.toLowerCase()] = newPlayer
-                addedPlayers.push(newPlayer)
+        if (avalPositions.includes(newPlayer.position)) {
+            userTeam.unshift(newPlayer)
+            var index = avalPositions.indexOf(newPlayer.position)
+            avalPositions.splice(index, 1)
+            addedPlayers.push(newPlayer.id)
+        } else {
+            var teamPlayer = userTeam.find(player => {
+                return player.position == newPlayer.position
+            })
+            searchResults.unshift(teamPlayer)
+            var index = addedPlayers.indexOf(teamPlayer.id)
+            addedPlayers.splice(index, 1)
+            var playIndex = userTeam.indexOf(teamPlayer)
+            userTeam.splice(playIndex, 1, newPlayer)
+            addedPlayers.push(newPlayer.id)
         }
         cb(userTeam)
     }
     //just removes player with matching idea and updates team
     this.removePlayer = function removePlayer(id, cb) {
-        for (var key in userTeam) {
-            if (userTeam[key].id == id) {
-                userTeam[key] = {}
-            }
+        for (let i = 0; i < userTeam.length; i++) {
+            const player = userTeam[i];
+            avalPositions.push(player.position)
+            userTeam.splice([i], 1)
         }
+        var idStr = '' + id
+        var index = addedPlayers.indexOf(idStr)
+        addedPlayers.splice(index, 1)
         cb(userTeam)
     }
-    function swapPlayer(id) {
-        if (id != undefined) {
-            for (var key in userTeam) {
-                if (userTeam[key].id == id) {
-                    searchResults.unshift(userTeam[key])
-                    removeAddedPlayer(id)
-                    userTeam[key] = {}
-                }
-            }
-        }
-    }
-    //records search results and logs them so i can edit them as players are added or removed
     this.searchRecord = function searchRecord(arr) {
         var search = []
         for (let i = 0; i < arr.length; i++) {
             const player = arr[i];
-            if (!(addedPlayers.find(function (addedPlayers) {
-                return player.id == addedPlayers.id
-            }))) {
+            if (!(addedPlayers.includes(player.id))) {
                 search.push(player)
             }
         }
@@ -178,18 +142,9 @@ function NflService() {
     //adds player back into search and data and redraws it so that they can be added again
     this.addSearch = function addSearch(playerId, cb) {
         var player = getPlayersById(playerId)
-        removeAddedPlayer(playerId)
+        // removeAddedPlayer(playerId)
         searchResults.unshift(player[0])
         cb(searchResults)
-    }
-
-    function removeAddedPlayer(id) {
-        for (let i = 0; i < addedPlayers.length; i++) {
-            const addPlayer = addedPlayers[i];
-            if (addPlayer.id == id) {
-                addedPlayers.splice([i], 1)
-            }
-        }
     }
 
     loadPlayersData(filterData); //call the function above every time we create a new service

@@ -22,9 +22,8 @@ function NflController() {
     //dynamically draws users team
     function drawTeam(team) {
         var template = ''
-        var pos = [team.qb, team.rb1, team.rb2, team.wr1, team.wr2, team.wr3, team.te, team.dst, team.k]
-        for (let i = 0; i < pos.length; i++) {
-            const player = pos[i];
+        for (let i = 0; i < team.length; i++) {
+            const player = team[i];
             if (player.id) {
                 template += `
                     <div class="col-10 offset-2 card mt-3 d-flex flex-column team-card">
@@ -39,20 +38,20 @@ function NflController() {
         }
         document.getElementById('user-team').innerHTML = template
         //this makes the header team name thing to the right of the search bar
-        document.getElementById('team-display').innerHTML = `
-        <p>QB: ${team.qb.name ? team.qb.name : 'empty'}<br>
-            RB: ${team.rb1.name  ? team.rb1.name : 'empty'}<br>
-            RB: ${team.rb2.name ? team.rb2.name : 'empty'}
-        </p>
-        <p>WR: ${team.wr1.name  ? team.wr1.name : 'empty'}<br>
-            WR: ${team.wr2.name  ? team.wr2.name : 'empty'}<br>
-            WR: ${team.wr3.name  ? team.wr3.name : 'empty'}
-        </p>
-        <p>TE: ${team.te.name ? team.te.name : 'empty'}<br>
-            DST: ${team.dst.name  ? team.dst.name : 'empty'}<br>
-            K: ${team.k.name  ? team.k.name : 'empty'}
-        </p>
-        `
+        // document.getElementById('team-display').innerHTML = `
+        // <p>QB: ${team.qb.name ? team.qb.name : 'empty'}<br>
+        //     RB: ${team.rb1.name  ? team.rb1.name : 'empty'}<br>
+        //     RB: ${team.rb2.name ? team.rb2.name : 'empty'}
+        // </p>
+        // <p>WR: ${team.wr1.name  ? team.wr1.name : 'empty'}<br>
+        //     WR: ${team.wr2.name  ? team.wr2.name : 'empty'}<br>
+        //     WR: ${team.wr3.name  ? team.wr3.name : 'empty'}
+        // </p>
+        // <p>TE: ${team.te.name ? team.te.name : 'empty'}<br>
+        //     DST: ${team.dst.name  ? team.dst.name : 'empty'}<br>
+        //     K: ${team.k.name  ? team.k.name : 'empty'}
+        // </p>
+        // `
     }
     //this finds players on search submit
     this.search = function search(e) {
@@ -76,6 +75,7 @@ function NflController() {
 
     this.addPlayer = function addPlayer(id) {
         //sends added players id, drawTeam function to services addPlayer function    
+        debugger
         nflService.addPlayer(id, drawTeam)
         //removes player from search results and data
         nflService.removeSearch(drawResults)
@@ -83,9 +83,9 @@ function NflController() {
     this.removePlayer = function removePlayer(id) {
         if (id != undefined) {
             //tells service to removePlayer from userTeam that has that id
+            nflService.addSearch(id, drawResults)
             nflService.removePlayer(id, drawTeam)
             //adds removed player back into search results
-            nflService.addSearch(id, drawResults)
         }
     }
 }
