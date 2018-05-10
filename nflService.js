@@ -56,13 +56,6 @@ function NflService() {
         });
     }
     //finds all players that match team name search 
-    this.getPlayersByTeam = function (teamName) {
-        return filteredData.filter(function (player) {
-            if (player.team == teamName) {
-                return true;
-            }
-        })
-    }
     function getPlayersById(id) {
         return userTeam.filter(function (player) {
             if (player.id == id) {
@@ -70,20 +63,12 @@ function NflService() {
             }
         })
     }
-    //find player by position
-    this.getPlayersByPosition = function (position) {
-        return filteredData.filter(function (player) {
-            if (player.position == position) {
-                return true;
-            }
-        })
-    }
-    //find player by name
-    this.getPlayersByName = function (name) {
-        return filteredData.filter(function (player) {
-            //makes players in data same case as search term then checks to see if term is included in players name
-            if (player.name.toUpperCase().includes(name)) {
-                return true;
+    function getPlayerByQuery(query) {
+        return filteredData.filter(player => {
+            for (var key in player) {
+                if (player[key].toUpperCase().includes(query)){
+                    return true
+                }
             }
         })
     }
@@ -115,15 +100,17 @@ function NflService() {
     this.removePlayer = function removePlayer(id, cb) {
         for (let i = 0; i < userTeam.length; i++) {
             const player = userTeam[i];
+           if(player.id == id) {
             avalPositions.push(player.position)
             userTeam.splice([i], 1)
+           }
         }
         var idStr = '' + id
         var index = addedPlayers.indexOf(idStr)
         addedPlayers.splice(index, 1)
         cb(userTeam)
     }
-    this.searchRecord = function searchRecord(arr) {
+    function searchRecord(arr) {
         var search = []
         for (let i = 0; i < arr.length; i++) {
             const player = arr[i];
@@ -136,7 +123,7 @@ function NflService() {
     }
     //redraws search
     this.removeSearch = function removeSearch(cb) {
-        var newResults = this.searchRecord(searchResults)
+        var newResults = searchRecord(searchResults)
         cb(searchResults)
     }
     //adds player back into search and data and redraws it so that they can be added again
@@ -145,6 +132,13 @@ function NflService() {
         // removeAddedPlayer(playerId)
         searchResults.unshift(player[0])
         cb(searchResults)
+    }
+
+    this.search = function Search(query, cb) {
+        var resultsArr = getPlayerByQuery(query)
+        var filteredSearch = searchRecord(resultsArr)
+        document.getElementById("searchForm").reset();
+        cb(filteredSearch)
     }
 
     loadPlayersData(filterData); //call the function above every time we create a new service

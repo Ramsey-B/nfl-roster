@@ -56,26 +56,11 @@ function NflController() {
     //this finds players on search submit
     this.search = function search(e) {
         e.preventDefault();
-        //makes search term uppercase so user casing doesnt matter
         var searchTerm = e.target.player.value.toUpperCase()
-        //finds players that match search
-        var teamSearch = nflService.getPlayersByTeam(searchTerm)
-        var posSearch = nflService.getPlayersByPosition(searchTerm)
-        var nameSearch = nflService.getPlayersByName(searchTerm)
-        //combines arrays returned by all 3 searchs
-        var teamAndPos = teamSearch.concat(posSearch)
-        var resultArr = teamAndPos.concat(nameSearch)
-        //creates search record array in service
-        var filteredSearch = nflService.searchRecord(resultArr)
-        //clears the seach bar
-        document.getElementById("searchForm").reset();
-        //draws search results
-        drawResults(filteredSearch)
+        nflService.search(searchTerm, drawResults)
     }
 
     this.addPlayer = function addPlayer(id) {
-        //sends added players id, drawTeam function to services addPlayer function    
-        debugger
         nflService.addPlayer(id, drawTeam)
         //removes player from search results and data
         nflService.removeSearch(drawResults)
