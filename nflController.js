@@ -36,22 +36,54 @@ function NflController() {
             `
             }
         }
+        var teamObj = {
+            RB: {
+                RB1: '',
+                RB2: ''
+            },
+            WR: {
+                WR1: '',
+                WR2: '',
+                WR3: ''
+            }
+        }
+        team.forEach(player => {
+            if (player.position == 'RB') {
+                if (!teamObj.RB['RB1']) {
+                    teamObj.RB.RB1 = player.name
+                } else {
+                    teamObj.RB.RB2 = player.name
+                }
+            }
+            if (player.position == 'WR') {
+                if (teamObj.WR['WR1']) {
+                    teamObj.WR['WR1'] = player.name
+                } else if (teamObj.WR['WR2']) {
+                    teamObj.WR['WR2'] = player.name
+                } else {
+                    teamObj.WR['WR3'] = player.name
+                }
+            } else if (player.position != 'WR' && player.position != 'RB') {
+                teamObj[player.position] = player.name
+            }
+        });
+        console.log(teamObj)
         document.getElementById('user-team').innerHTML = template
         //this makes the header team name thing to the right of the search bar
-        // document.getElementById('team-display').innerHTML = `
-        // <p>QB: ${team.qb.name ? team.qb.name : 'empty'}<br>
-        //     RB: ${team.rb1.name  ? team.rb1.name : 'empty'}<br>
-        //     RB: ${team.rb2.name ? team.rb2.name : 'empty'}
-        // </p>
-        // <p>WR: ${team.wr1.name  ? team.wr1.name : 'empty'}<br>
-        //     WR: ${team.wr2.name  ? team.wr2.name : 'empty'}<br>
-        //     WR: ${team.wr3.name  ? team.wr3.name : 'empty'}
-        // </p>
-        // <p>TE: ${team.te.name ? team.te.name : 'empty'}<br>
-        //     DST: ${team.dst.name  ? team.dst.name : 'empty'}<br>
-        //     K: ${team.k.name  ? team.k.name : 'empty'}
-        // </p>
-        // `
+        document.getElementById('team-display').innerHTML = `
+        <p>QB: ${teamObj.QB ? teamObj.QB : 'empty'}<br>
+            RB: ${teamObj.RB.RB1 ? teamObj.RB.RB1 : 'empty'}<br>
+            RB: ${teamObj.RB.RB2 ? teamObj.RB.RB2 : 'empty'}
+        </p>
+        <p>WR: ${teamObj.WR.WR1 ? teamObj.WR.WR1 : 'empty'}<br>
+            WR: ${teamObj.WR.WR2 ? teamObj.WR.WR2 : 'empty'}<br>
+            WR: ${teamObj.WR.WR3 ? teamObj.WR.WR3 : 'empty'}
+        </p>
+        <p>TE: ${teamObj.TE ? teamObj.TE : 'empty'}<br>
+            DST: ${teamObj.DST ? teamObj.DST : 'empty'}<br>
+            K: ${teamObj.K ? teamObj.K : 'empty'}
+        </p>
+        `
     }
     //this finds players on search submit
     this.search = function search(e) {
